@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.IO;
 using System.Text;
 using System.Collections.Generic;
@@ -54,5 +55,21 @@ namespace ByteNik.Queues.Test
             Assert.AreEqual(res, value);
             Assert.IsFalse(fail);
         }
+
+        [TestMethod]
+        public void EquivelentToBuiltInQueueTest()
+        {
+            var dotNetQueue = new Queue<string>();
+            for(int x = 0; x < 25; x++)
+            {
+                var str = x.ToString();
+                dotNetQueue.Enqueue(str);
+                _testQueue.Enqueue(str);
+            }
+
+            while (dotNetQueue.Count != 0)
+                Assert.AreEqual(dotNetQueue.Dequeue(), _testQueue.TryDequeue());
+        }
     }
 }
+

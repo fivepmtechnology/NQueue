@@ -23,8 +23,7 @@ namespace ByteNik.Queues
         {
             lock (Path)
             {
-                var fname = Directory.GetFiles(Path).Select(System.IO.Path.GetFileName).OrderByDescending(x => x).FirstOrDefault();
-                var number = int.Parse(fname ?? "0"); // get highest number file
+                var number = Directory.GetFiles(Path).Select(x => int.Parse(System.IO.Path.GetFileName(x))).OrderByDescending(x => x).FirstOrDefault();
                 var file = System.IO.Path.Combine(Path, (number + 1).ToString());
 
                 using (var stream = new FileStream(file, FileMode.Create)) _formatter.Serialize(stream, item);
@@ -49,17 +48,22 @@ namespace ByteNik.Queues
 
         public T TryDequeue()
         {
-            return TryDequeue(TimeSpan.Zero);
+            return TryDequeue(TimeSpan.MaxValue);
         }
 
         public T TryDequeue(TimeSpan timeout)
         {
             lock (Path)
             {
-                var file = Directory.GetFiles(Path).OrderBy(System.IO.Path.GetFileName).FirstOrDefault();
+                var file = Directory.GetFiles(Path).OrderBy(x => int.Parse(System.IO.Path.GetFileName(x))).FirstOrDefault();
                 if (file == null)
                 {
+                    if (timeout == TimeSpan.Zero)
+                        throw new IndexOutOfRangeException("No items to dequeue.");
+                    
                     // block waiting until timeout or until a file is available
+                    if (timeout == TimeSpan.MaxValue)
+                        timeout = TimeSpan.Zero;
                     if (Monitor.Wait(Path, timeout) == false)
                         throw new TimeoutException();
 
@@ -67,7 +71,7 @@ namespace ByteNik.Queues
                 }
 
                 T result;
-                using (var stream = new FileStream(file, FileMode.Open)) result = (T)_formatter.Deserialize(stream);
+                using (var stream = new FileStream(file, FileMode.Open)) result = (T) _formatter.Deserialize(stream);
                 File.Delete(file);
 
                 return result;
