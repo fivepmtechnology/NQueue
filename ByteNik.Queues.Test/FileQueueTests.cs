@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace ByteNik.Queues.Test
 {
     [TestClass]
-    public class QueueTests
+    public class FileQueueTests
     {
         private FileQueue<string> _testQueue;
 
