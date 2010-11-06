@@ -62,10 +62,13 @@ namespace ByteNik.Queues
                         throw new IndexOutOfRangeException("No items to dequeue.");
                     
                     // block waiting until timeout or until a file is available
+                    bool res;
                     if (timeout == TimeSpan.MaxValue)
-                        timeout = TimeSpan.Zero;
-                    if (Monitor.Wait(Path, timeout) == false)
-                        throw new TimeoutException();
+                        res = Monitor.Wait(Path);
+                    else
+                        res = Monitor.Wait(Path, timeout);
+
+                    if(!res) throw new TimeoutException();
 
                     return TryDequeue(timeout);
                 }

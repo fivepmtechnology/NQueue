@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace ByteNik.Queues.Test
@@ -60,12 +61,29 @@ namespace ByteNik.Queues.Test
         public void EquivelentToBuiltInQueueTest()
         {
             var dotNetQueue = new Queue<string>();
-            for(int x = 0; x < 25; x++)
+            for (int x = 0; x < 25; x++)
             {
                 var str = x.ToString();
                 dotNetQueue.Enqueue(str);
                 _testQueue.Enqueue(str);
             }
+
+            while (dotNetQueue.Count != 0)
+                Assert.AreEqual(dotNetQueue.Dequeue(), _testQueue.TryDequeue());
+        }
+
+        [TestMethod]
+        public void ProducerConsumerTest()
+        {
+            var dotNetQueue = new Queue<string>();
+            for (int x = 0; x < 25; x++)
+                dotNetQueue.Enqueue(x.ToString());
+
+            ThreadPool.QueueUserWorkItem(state =>
+                                                 {
+                                                     for (int x = 0; x < 25; x++)
+                                                         _testQueue.Enqueue(x.ToString());
+                                                 });
 
             while (dotNetQueue.Count != 0)
                 Assert.AreEqual(dotNetQueue.Dequeue(), _testQueue.TryDequeue());
