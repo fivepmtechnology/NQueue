@@ -5,7 +5,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ByteNik.Queues
+namespace NQueue
 {
     public class FileQueue<T> : IDurableQueue<T>
     {

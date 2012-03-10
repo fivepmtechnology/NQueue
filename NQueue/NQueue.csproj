@@ -8,8 +8,8 @@
     <ProjectGuid>{3AC02199-D8E5-434D-858C-A4883C4D2626}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ByteNik.Queues</RootNamespace>
-    <AssemblyName>ByteNik.Queues</AssemblyName>
+    <RootNamespace>NQueue</RootNamespace>
+    <AssemblyName>NQueue</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace ByteNik.Queues
+namespace NQueue
 {
     /// <summary>
     /// Represents a durable queue.
