@@ -32,7 +32,7 @@ namespace ByteNik.Queues.Test
         {
             const string value = "abc";
             _testQueue.Enqueue(value);
-            var res = _testQueue.TryDequeue();
+            var res = _testQueue.Dequeue();
 
             Assert.AreEqual(res, value);
         }
@@ -42,11 +42,11 @@ namespace ByteNik.Queues.Test
         {
             const string value = "abc";
             _testQueue.Enqueue(value);
-            var res = _testQueue.TryDequeue();
+            var res = _testQueue.Dequeue();
             bool fail = true;
             try
             {
-                _testQueue.TryDequeue(TimeSpan.FromMilliseconds(10));
+                _testQueue.Dequeue(TimeSpan.FromMilliseconds(10));
             }
             catch
             {
@@ -69,7 +69,7 @@ namespace ByteNik.Queues.Test
             }
 
             while (dotNetQueue.Count != 0)
-                Assert.AreEqual(dotNetQueue.Dequeue(), _testQueue.TryDequeue());
+                Assert.AreEqual(dotNetQueue.Dequeue(), _testQueue.Dequeue());
         }
 
         [TestMethod]
@@ -86,7 +86,7 @@ namespace ByteNik.Queues.Test
                                                  });
 
             while (dotNetQueue.Count != 0)
-                Assert.AreEqual(dotNetQueue.Dequeue(), _testQueue.TryDequeue());
+                Assert.AreEqual(dotNetQueue.Dequeue(), _testQueue.Dequeue());
         }
     }
 }

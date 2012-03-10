@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ByteNik.Queues
 {
@@ -46,12 +47,12 @@ namespace ByteNik.Queues
             }
         }
 
-        public T TryDequeue()
+        public T Dequeue()
         {
-            return TryDequeue(TimeSpan.MaxValue);
+            return Dequeue(TimeSpan.MaxValue);
         }
 
-        public T TryDequeue(TimeSpan timeout)
+        public T Dequeue(TimeSpan timeout)
         {
             lock (Path)
             {
@@ -70,7 +71,7 @@ namespace ByteNik.Queues
 
                     if(!res) throw new TimeoutException();
 
-                    return TryDequeue(timeout);
+                    return Dequeue(timeout);
                 }
 
                 T result;
@@ -81,9 +82,9 @@ namespace ByteNik.Queues
             }
         }
 
-        public void DequeueAsync(Action<T> callback)
+        public Task<T> DequeueAsync()
         {
-            ThreadPool.QueueUserWorkItem(state => callback(TryDequeue()));
+            return Task<T>.Factory.StartNew(Dequeue);
         }
 
         public void Cleanup()

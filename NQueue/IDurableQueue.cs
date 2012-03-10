@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace ByteNik.Queues
 {
@@ -24,17 +25,17 @@ namespace ByteNik.Queues
         /// Dequeues an item from the queue, blocking until one is available.
         /// </summary>
         /// <returns>the dequeued item</returns>
-        T TryDequeue();
+        T Dequeue();
         /// <summary>
         /// Dequeues an item from the queue, blocking until one is available or the timeout elapses.
         /// </summary>
         /// <returns>the dequeued item</returns>
-        T TryDequeue(TimeSpan timeout);
+        T Dequeue(TimeSpan timeout);
 
         /// <summary>
         /// Dequeues an item from the queue, passing it to the callback delegate.
         /// </summary>
         /// <param name="callback"></param>
-        void DequeueAsync(Action<T> callback);
+        Task<T> DequeueAsync();
     }
 }
