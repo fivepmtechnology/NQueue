@@ -53,9 +53,9 @@
     <Compile Include="FileQueueTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ByteNik.Queues\ByteNik.Queues.csproj">
+    <ProjectReference Include="..\NQueue\NQueue.csproj">
       <Project>{3AC02199-D8E5-434D-858C-A4883C4D2626}</Project>
-      <Name>ByteNik.Queues</Name>
+      <Name>NQueue</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
